@@ -40,6 +40,9 @@ class User(db.Model, UserMixin):
     current_login_ip = db.Column(db.String(255))
     login_count = db.Column(db.Integer)
 
+    def __repr__(self):
+        return '<{self.__class__.__name__}:{self.email}>'.format(self=self)
+
 
 class Client(db.Model):
     __tablename__ = 'clients'

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+import logging
 import os.path as op
 
 from flask.ext.cors import CORS
@@ -13,10 +14,6 @@ from .models import db, User, Role
 
 __version__ = '0.1'
 
-# login_manager = LoginManager()
-# login_manager.session_protection = 'strong'
-# login_manager.login_view = 'auth.login'
-
 oauth = OAuth2Provider()
 cors = CORS()
 
@@ -25,6 +22,21 @@ user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(datastore=user_datastore)
 debug_toolbar = DebugToolbarExtension()
 mail = Mail()
+
+
+logger1 = logging.getLogger('flask_oauthlib')
+logger2 = logging.getLogger('oauthlib')
+logger1.setLevel(logging.DEBUG)
+logger2.setLevel(logging.DEBUG)
+file_handler1 = logging.FileHandler('flask_oauthlib.log')
+file_handler2 = logging.FileHandler('oauthlib.log')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s = %(message)s')
+file_handler1.setFormatter(formatter)
+file_handler2.setFormatter(formatter)
+
+logger1.addHandler(file_handler1)
+logger2.addHandler(file_handler2)
+
 
 def create_app(config_name):
     """

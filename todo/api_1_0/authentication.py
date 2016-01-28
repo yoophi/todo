@@ -8,11 +8,11 @@ oauth implementation
 from datetime import datetime, timedelta
 from flask import request, render_template, jsonify, redirect
 from flask.ext.login import current_user, login_required
+from flask.ext.security.utils import verify_password
 
 from . import api
 from .. import oauth, db
 from ..models import Client, Grant, User, Token
-
 
 @oauth.clientgetter
 def load_user_client(client_id):
@@ -79,9 +79,9 @@ def save_user_token(token, request, *args, **kwargs):
 
 
 @oauth.usergetter
-def get_user(username, password, *args, **kwargs):
-    user = User.query.filter_by(username=username).first()
-    if user and user.check_password(password):
+def get_user(email, password, *args, **kwargs):
+    user = User.query.filter_by(email=email).first()
+    if user and verify_password(password, user.password):
         return user
     return None
 
