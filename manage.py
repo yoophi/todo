@@ -2,10 +2,8 @@
 # coding: utf-8
 
 import os
-
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
-
 from todo import create_app, db
 
 COV = None
