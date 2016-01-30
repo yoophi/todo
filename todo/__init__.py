@@ -8,6 +8,7 @@ from flask.ext.debugtoolbar import DebugToolbarExtension
 from flask.ext.mail import Mail
 from flask.ext.oauthlib.provider import OAuth2Provider
 from flask.ext.security import SQLAlchemyUserDatastore, Security
+from flask.ext.marshmallow import Marshmallow
 
 from .helpers import Flask
 from .models import db, User, Role
@@ -16,6 +17,7 @@ __version__ = '0.1'
 
 oauth = OAuth2Provider()
 cors = CORS()
+ma = Marshmallow()
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
@@ -52,19 +54,15 @@ def create_app(config_name):
 
     cors.init_app(app)
     db.init_app(app)
-    # login_manager.init_app(app)
     oauth.init_app(app)
     security.init_app(app)
     debug_toolbar.init_app(app)
+    ma.init_app(app)
     mail.init_app(app)
 
     from .main import main as main_blueprint
 
     app.register_blueprint(main_blueprint)
-
-    # from .auth import auth as auth_blueprint
-    #
-    # app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
     from .api_1_0 import api as api_1_0_blueprint
 
@@ -72,8 +70,3 @@ def create_app(config_name):
 
     return app
 
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#     """Hook for Flask-Login to load a User instance from a user ID."""
-#     return User.query.get(user_id)
