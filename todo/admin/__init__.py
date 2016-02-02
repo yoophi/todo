@@ -1,5 +1,6 @@
 import os
 
+from flask import redirect
 from flask.ext.admin import Admin
 
 from ..helpers import Flask
@@ -15,6 +16,10 @@ def create_app(config_name):
 
     db.init_app(app)
     admin.init_app(app)
+
+    @app.route('/')
+    def index():
+        return redirect('/admin')
 
     from . import views
 
