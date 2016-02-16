@@ -71,6 +71,7 @@ class TodoApi(MethodView):
 
 
 class TodoListApi(MethodView):
+    @oauth.require_oauth('email')
     def get(self):
         todos = Todo.query.all()
         result = todos_schema.dump(todos)
