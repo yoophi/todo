@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 # coding: utf-8
 import logging
-import os.path as op
+import os
 
+from flask import Flask
+from flask.ext.config_helper import Config
 from flask.ext.cors import CORS
 from flask.ext.debugtoolbar import DebugToolbarExtension
 from flask.ext.mail import Mail
+from flask.ext.marshmallow import Marshmallow
 from flask.ext.oauthlib.provider import OAuth2Provider
 from flask.ext.security import SQLAlchemyUserDatastore, Security
-from flask.ext.marshmallow import Marshmallow
 
-from .helpers import Flask
 from .models import db, User, Role
 
 __version__ = '0.1'
 
+config = Config()
 oauth = OAuth2Provider()
 cors = CORS()
 ma = Marshmallow()
@@ -24,7 +26,6 @@ user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(datastore=user_datastore)
 debug_toolbar = DebugToolbarExtension()
 mail = Mail()
-
 
 logger1 = logging.getLogger('flask_oauthlib')
 logger2 = logging.getLogger('oauthlib')
@@ -47,10 +48,15 @@ def create_app(config_name):
 
     flask application generator
     """
-    template_folder = op.join(op.dirname(op.abspath(__file__)), 'templates')
+    template_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
     app = Flask(__name__, template_folder=template_folder)
-    app.config.from_yaml(app.root_path)
-    app.config.from_heroku()
+
+    config.init_app(app)
+    app.debug = True
+    app.config.from_yaml(config_name=config_name,
+                         file_name='app.yml',
+                         search_paths=[os.path.dirname(app.root_path)])
+    app.config.from_heroku(keys=['SQLALCHEMY_DATABASE_URI', ])
 
     cors.init_app(app)
     db.init_app(app)
@@ -69,4 +75,3 @@ def create_app(config_name):
     app.register_blueprint(api_1_0_blueprint, url_prefix='/api/v1.0')
 
     return app
-

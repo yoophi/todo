@@ -11,8 +11,7 @@ COMMON: &common
   MAIL_USERNAME: username
   MAIL_PASSWORD: password
 
-
-DEVELOPMENT: &development
+DEFAULT: &default
   <<: *common
   DEBUG: True
   SQLALCHEMY_DATABASE_URI: 'sqlite:////tmp/todo.sqlite'
@@ -25,7 +24,7 @@ PRODUCTION: &production
 
 TESTING: &testing
   <<: *common
-  SERVER_NAME: 'locahost'
+  SERVER_NAME: 'localhost'
   SQLALCHEMY_DATABASE_URI: 'sqlite:///:memory:'
   TESTING: True
 
