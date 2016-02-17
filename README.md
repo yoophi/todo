@@ -20,6 +20,13 @@ virtualenv 를 사용한다면 초기화하세요.
 
     pip install requirements.txt    
     
+프로젝트 디렉토리로 이동한 후 설정 파일을 복사합니다.
+
+    cd todo
+    cp app.yml.default app.yml
+    
+설정 파일을 적당히 편집합니다.    
+    
     # DB 설치
     python manage.py db upgrade
     
