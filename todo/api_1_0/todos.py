@@ -50,11 +50,11 @@ class TodoApi(MethodView):
             todo.body = payload.get('priority')
 
         if payload.get('is_completed'):
-            todo.body = payload.get('is_completed')
+            todo.is_completed = payload.get('is_completed')
 
         db.session.commit()
 
-        return jsonify(result='Operate successfully', post=todo_schema.dump(todo).data)
+        return jsonify(result='Operate successfully', todo=todo_schema.dump(todo).data)
 
     @oauth.require_oauth('email')
     def delete(self, id):
