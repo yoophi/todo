@@ -52,7 +52,6 @@ def create_app(config_name):
     app = Flask(__name__, template_folder=template_folder)
 
     config.init_app(app)
-    app.debug = True
     app.config.from_yaml(config_name=config_name,
                          file_name='app.yml',
                          search_paths=[os.path.dirname(app.root_path)])
