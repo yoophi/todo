@@ -43,13 +43,13 @@ class TodoApi(MethodView):
 
         payload = json.loads(request.data)
 
-        if payload.get('title'):
+        if 'title' in payload:
             todo.title = payload.get('title')
 
-        if payload.get('priority'):
+        if 'priority' in payload:
             todo.body = payload.get('priority')
 
-        if payload.get('is_completed'):
+        if 'is_completed' in payload:
             todo.is_completed = payload.get('is_completed')
 
         db.session.commit()
