@@ -57,7 +57,7 @@ def create_app(config_name):
                          search_paths=[os.path.dirname(app.root_path)])
     app.config.from_heroku(keys=['SQLALCHEMY_DATABASE_URI', ])
 
-    cors.init_app(app)
+    cors.init_app(app, resources={r"/api/v1.0/*": {"origins": "*"}})
     db.init_app(app)
     oauth.init_app(app)
     security.init_app(app)
