@@ -64,7 +64,9 @@ def save_user_token(token, request, *args, **kwargs):
     expires_in = token.pop('expires_in') + 60*60
     expires = datetime.utcnow() + timedelta(seconds=expires_in)
 
-    tok = Token(**token)
+    token_data = {key: token[key] for key in token.keys()
+                  if key in ('token_type', 'scope', 'access_token', 'refresh_token')}
+    tok = Token(**token_data)
     tok.expires = expires
     tok.client_id = request.client.client_id
 
