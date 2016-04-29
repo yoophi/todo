@@ -17,8 +17,8 @@
   "basePath": ":5000/api/v1.0",
   "tags": [
     {
-      "name": "pet",
-      "description": "Everything about your Pets",
+      "name": "todo",
+      "description": "Everything about your Todos",
       "externalDocs": {
         "description": "Find out more",
         "url": "http://swagger.io"
@@ -44,7 +44,7 @@
     "/me": {
       "get": {
         "tags": [
-          "pet"
+          "user"
         ],
         "summary": "Add a new pet to the store",
         "description": "",
@@ -80,7 +80,7 @@
     "/todos": {
       "get": {
         "tags": [
-          "pet"
+          "todo"
         ],
         "summary": "Add a new pet to the store",
         "description": "",
