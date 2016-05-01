@@ -47,7 +47,7 @@ class TodoApi(MethodView):
             todo.title = payload.get('title')
 
         if 'priority' in payload:
-            todo.body = payload.get('priority')
+            todo.priority = payload.get('priority')
 
         if 'is_completed' in payload:
             todo.is_completed = payload.get('is_completed')
