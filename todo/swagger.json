@@ -13,8 +13,14 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host": "localhost",
-  "basePath": ":5000/api/v1.0",
+  "host": "localhost:5000",
+  "schemes": [
+    "http"
+  ],
+  "basePath": "/api/v1.0",
+  "produces": [
+    "application/json"
+  ],
   "tags": [
     {
       "name": "todo",
@@ -32,9 +38,6 @@
         "url": "http://swagger.io"
       }
     }
-  ],
-  "schemes": [
-    "http"
   ],
   "paths": {
     "/me": {
@@ -68,6 +71,107 @@
             ]
           }
         ]
+      }
+    },
+    "/todo/{todo-id}": {
+      "parameters": [
+        {
+          "name": "todo-id",
+          "description": "Todo ID",
+          "in": "path",
+          "type": "integer",
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "todo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Todo"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "todo"
+        ],
+        "security": [
+          {
+            "petstore_auth": [
+              "email"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "todo"
+        ],
+        "security": [
+          {
+            "petstore_auth": [
+              "email"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "수정하고 싶은 Todo JSON",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "priority": {
+                  "type": "integer",
+                  "default": 1
+                },
+                "is_completed": {
+                  "type": "bolean",
+                  "default": true
+                }
+              }
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "string"
+                },
+                "todo": {
+                  "$ref": "#/definitions/Todo"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/todos": {
@@ -109,25 +213,63 @@
             ]
           }
         ]
+      },
+      "post": {
+        "tags": [
+          "todo"
+        ],
+        "summary": "새로운 Todo 생성",
+        "security": [
+          {
+            "petstore_auth": [
+              "email"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "새로 생성하고 싶은 Todo JSON",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "priority": {
+                  "type": "integer",
+                  "default": 1
+                }
+              }
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "string"
+                },
+                "todo": {
+                  "$ref": "#/definitions/Todo"
+                }
+              }
+            }
+          }
+        }
       }
-    }
-  },
-  "securityDefinitions": {
-    "petstore_auth": {
-      "type": "oauth2",
-      "authorizationUrl": "http://localhost:5000/api/v1.0/oauth/authorize",
-      "flow": "implicit",
-      "scopes": {
-        "email": "read your pets"
-      }
-    },
-    "api_key": {
-      "type": "apiKey",
-      "name": "api_key",
-      "in": "header"
     }
   },
   "definitions": {
+    "Id": {
+      "type": "integer",
+      "format": "int64"
+    },
     "User": {
       "type": "object",
       "properties": {
@@ -157,9 +299,23 @@
         "title": {
           "type": "string"
         },
+        "priority": {
+          "type": "integer"
+        },
         "is_completed": {
           "type": "boolean",
           "default": false
+        },
+        "_links": {
+          "type": "object",
+          "properties": {
+            "collection": {
+              "type": "string"
+            },
+            "self": {
+              "type": "string"
+            }
+          }
         }
       },
       "xml": {
@@ -180,6 +336,21 @@
           "type": "string"
         }
       }
+    }
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://localhost:5000/api/v1.0/oauth/authorize",
+      "flow": "implicit",
+      "scopes": {
+        "email": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
     }
   },
   "externalDocs": {
