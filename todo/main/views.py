@@ -1,20 +1,23 @@
 # -*- coding: utf8 -*-
 import inspect
-import os
 import json
+import os
 from urlparse import urlparse
-
 import yaml
 from flask import render_template, jsonify, current_app, url_for
 from flask.ext.cors import cross_origin
 from flask.ext.swagger import swagger
-
 from . import main
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
+
+
+@main.route('/error')
+def error():
+    return 'ERROR_URI'
 
 
 @main.route('/swagger.json', methods=['GET'])
@@ -100,6 +103,17 @@ def spec():
         host=(get_netloc()),
     )))
     return jsonify(swag)
+
+
+@main.route('/swagger')
+def swagger_ui():
+    return render_template('swagger_ui.html',
+                           swagger_spec_url=url_for('main.spec', _external=True))
+
+
+@main.route('/o2c.html')
+def o2c():
+    return render_template('o2c.html')
 
 
 def get_netloc():
