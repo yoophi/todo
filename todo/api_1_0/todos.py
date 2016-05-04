@@ -110,7 +110,7 @@ class TodoApi(MethodView):
         해당 Todo 삭제
         ---
         parameters:
-          - name: todo-id
+          - name: id
             description: Todo ID
             in: path
             type: integer
