@@ -69,7 +69,7 @@ class TodoApi(MethodView):
                   type: integer
                   default: 1
                 is_completed:
-                  type: bolean
+                  type: boolean
                   default: true
             required: true
         responses:

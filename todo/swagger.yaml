@@ -2,6 +2,7 @@ info:
   title: Todo API
   description: Todo API 서버입니다
   termsOfService: http://swagger.io/terms
+  version: "0.1"
   contact:
     email: yoophi@gmail.com
 host: localhost:5000
