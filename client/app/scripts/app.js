@@ -2,14 +2,15 @@
 
 /**
  * @ngdoc overview
- * @name clientApp
+ * @name todoApp
  * @description
- * # clientApp
+ * # todoApp
  *
  * Main module of the application.
  */
 angular
-  .module('clientApp', [
+  .module('todoApp', [
+    'oauth',
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -17,7 +18,7 @@ angular
     'ngSanitize',
     'ngTouch'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $httpProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -29,7 +30,28 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
+      .when('/todo', {
+        templateUrl: 'views/todo.html',
+        controller: 'TodoCtrl',
+        controllerAs: 'todoList'
+      })
+      .when('/auth', {
+        templateUrl: 'views/auth.html',
+        controller: 'AuthCtrl',
+        controllerAs: 'auth'
+      })
+      .when('/access_token=:accessToken', {
+        template: '',
+        controller: function ($location, AccessToken) {
+          var hash = $location.path().substr(1);
+          AccessToken.setTokenFromString(hash);
+          $location.path('/');
+          $location.replace();
+        }
+      })
       .otherwise({
         redirectTo: '/'
       });
+
+    $httpProvider.interceptors.push('OAuth2HttpInterceptor')
   });
