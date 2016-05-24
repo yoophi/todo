@@ -27,4 +27,4 @@ OAuth2HttpInterceptor = ($q, $location, $log, $rootScope, Storage) ->
   }
 
 angular.module('todoApp')
-  .factory 'OAuth2HttpInterceptor', OAuth2HttpInterceptor
+  .factory 'OAuth2HttpInterceptor', ['$q', '$location', '$log', '$rootScope', 'Storage', OAuth2HttpInterceptor]
