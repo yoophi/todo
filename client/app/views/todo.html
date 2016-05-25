@@ -3,7 +3,7 @@
 <span>{{todoList.remaining()}} of {{todoList.todos.length}} remaining.</span>
 [ <a href="" ng-click="todoList.archive()">archive</a> ]
 
-<ul ui-sortable>
+<ul ui-sortable="todoSortable">
     <li ng-repeat="todo in todoList.todos">
         <input type="checkbox" ng-model="todo.is_completed" ng-change="todoList.updateTodo(todo)"/>
         <span class="done-{{todo.done}}">{{todo.title}}</span>

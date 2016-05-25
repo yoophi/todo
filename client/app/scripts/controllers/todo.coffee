@@ -1,7 +1,11 @@
 class TodoCtrl
-  constructor: (@TodoService) ->
+  constructor: (@$scope, @TodoService) ->
     @todos = []
     @getTodos()
+    @$scope.todoSortable =
+      containment: 'parent'
+      cursor: 'move'
+      tolerance: 'pointer'
 
   getTodos: () ->
     @TodoService.all()
@@ -28,7 +32,7 @@ class TodoCtrl
       @getTodos()
 
 
-TodoCtrl.$inject = ['TodoService']
+TodoCtrl.$inject = ['$scope', 'TodoService']
 
 angular.module('todoApp')
   .controller 'TodoCtrl', TodoCtrl
