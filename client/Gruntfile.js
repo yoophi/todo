@@ -37,16 +37,13 @@ module.exports = function (grunt) {
         files: ['bower.json'],
         tasks: ['wiredep']
       },
-      js: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all', 'newer:jscs:all'],
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        }
+      coffee: {
+        files: ['<%= yeoman.app %>/scripts/{,*/}*.{coffee,litcoffee,coffee.md}'],
+        tasks: ['newer:coffee:dist']
       },
-      jsTest: {
-        files: ['test/spec/{,*/}*.js'],
-        tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
+      coffeeTest: {
+        files: ['test/spec/{,*/}*.{coffee,litcoffee,coffee.md}'],
+        tasks: ['newer:coffee:test', 'karma']
       },
       compass: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
@@ -62,6 +59,7 @@ module.exports = function (grunt) {
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
           '.tmp/styles/{,*/}*.css',
+          '.tmp/scripts/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
@@ -126,32 +124,8 @@ module.exports = function (grunt) {
       },
       all: {
         src: [
-          'Gruntfile.js',
-          '<%= yeoman.app %>/scripts/{,*/}*.js'
+          'Gruntfile.js'
         ]
-      },
-      test: {
-        options: {
-          jshintrc: 'test/.jshintrc'
-        },
-        src: ['test/spec/{,*/}*.js']
-      }
-    },
-
-    // Make sure code styles are up to par
-    jscs: {
-      options: {
-        config: '.jscsrc',
-        verbose: true
-      },
-      all: {
-        src: [
-          'Gruntfile.js',
-          '<%= yeoman.app %>/scripts/{,*/}*.js'
-        ]
-      },
-      test: {
-        src: ['test/spec/{,*/}*.js']
       }
     },
 
@@ -209,13 +183,15 @@ module.exports = function (grunt) {
         src: '<%= karma.unit.configFile %>',
         ignorePath:  /\.\.\//,
         fileTypes:{
-          js: {
-            block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
+          coffee: {
+            block: /(([\s\t]*)#\s*?bower:\s*?(\S*))(\n|\r|.)*?(#\s*endbower)/gi,
               detect: {
-                js: /'(.*\.js)'/gi
+                js: /'(.*\.js)'/gi,
+                coffee: /'(.*\.coffee)'/gi
               },
               replace: {
-                js: '\'{{filePath}}\','
+              js: '\'{{filePath}}\'',
+              coffee: '\'{{filePath}}\''
               }
             }
           }
@@ -225,6 +201,32 @@ module.exports = function (grunt) {
         ignorePath: /(\.\.\/){1,2}bower_components\//
       }
     }, 
+
+    // Compiles CoffeeScript to JavaScript
+    coffee: {
+      options: {
+        sourceMap: true,
+        sourceRoot: ''
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/scripts',
+          src: '{,*/}*.coffee',
+          dest: '.tmp/scripts',
+          ext: '.js'
+        }]
+      },
+      test: {
+        files: [{
+          expand: true,
+          cwd: 'test/spec',
+          src: '{,*/}*.coffee',
+          dest: '.tmp/spec',
+          ext: '.js'
+        }]
+      }
+    },
 
     // Compiles Sass to CSS and generates necessary files if requested
     compass: {
@@ -438,12 +440,15 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
+        'coffee:dist',
         'compass:server'
       ],
       test: [
+        'coffee',
         'compass'
       ],
       dist: [
+        'coffee',
         'compass:dist',
         'imagemin',
         'svgmin'
@@ -453,7 +458,7 @@ module.exports = function (grunt) {
     // Test settings
     karma: {
       unit: {
-        configFile: 'test/karma.conf.js',
+        configFile: 'test/karma.conf.coffee',
         singleRun: true
       }
     }
@@ -509,7 +514,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'newer:jshint',
-    'newer:jscs',
     'test',
     'build'
   ]);
