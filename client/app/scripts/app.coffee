@@ -17,6 +17,7 @@ angular.module('todoApp', [
   'ngRoute'
   'ngSanitize'
   'ngTouch'
+  'ui.sortable'
 ]).config ($routeProvider, $httpProvider) ->
   $routeProvider.when('/',
     templateUrl: 'views/main.html'

@@ -10,7 +10,7 @@
    *
    * Main module of the application.
    */
-  angular.module('todoApp', ['oauth', 'ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch']).config(function($routeProvider, $httpProvider) {
+  angular.module('todoApp', ['oauth', 'ngAnimate', 'ngCookies', 'ngResource', 'ngRoute', 'ngSanitize', 'ngTouch', 'ui.sortable']).config(function($routeProvider, $httpProvider) {
     $routeProvider.when('/', {
       templateUrl: 'views/main.html',
       controller: 'MainCtrl',

@@ -34,6 +34,8 @@ module.exports = function(config) {
       'bower_components/ngstorage/ngStorage.js',
       'bower_components/jsrsasign/jsrsasign-latest-all-min.js',
       'bower_components/oauth-ng/dist/oauth-ng.js',
+      'bower_components/jquery-ui/jquery-ui.js',
+      'bower_components/angular-ui-sortable/sortable.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",
