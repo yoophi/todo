@@ -1,10 +1,14 @@
 # coding: utf-8
 import json
+
 from flask import jsonify, request
 from flask.views import MethodView
-from . import api
-from .. import ma, oauth
-from ..models import db, Todo
+
+from todo.core.api_1_0 import api
+from todo.database import db
+from todo.extensions import ma
+from todo.extensions import oauth
+from .models import Todo
 
 
 class TodoSchema(ma.Schema):
@@ -54,7 +58,7 @@ class TodoApi(MethodView):
         tags:
           - todo
         security:
-          - petstore_auth:
+          - oauth:
               - email
         parameters:
           - name: body
@@ -118,7 +122,7 @@ class TodoApi(MethodView):
         tags:
           - todo
         security:
-          - petstore_auth:
+          - oauth:
               - email
         responses:
           '200':
@@ -161,7 +165,7 @@ class TodoListApi(MethodView):
                   items:
                     $ref: '#/definitions/Todo'
         security:
-          - petstore_auth:
+          - oauth:
               - email
         """
         todos = Todo.query.all()
@@ -177,7 +181,7 @@ class TodoListApi(MethodView):
         tags:
           - todo
         security:
-          - petstore_auth:
+          - oauth:
               - email
         parameters:
           - name: body

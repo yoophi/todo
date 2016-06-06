@@ -1,6 +1,9 @@
 from unittest import TestCase
+
 from todo import create_app
-from todo.models import db, User, Token
+from todo.core.accounts.models import User
+from todo.core.api_1_0.models import Token
+from todo.database import db
 
 
 class TestUserModel(TestCase):

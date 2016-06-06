@@ -1,18 +1,26 @@
 # coding: utf-8
-
 from flask import request, jsonify
-from . import api
-from .. import oauth
+
+from todo.core.api_1_0 import api
+from todo.extensions import ma, oauth
 
 
-@api.route('/me')
+class UserSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'email')
+
+
+user_schema = UserSchema()
+
+
+@api.route('/users/self')
 @oauth.require_oauth('email')
-def me():
+def users_self():
     """
     현재 사용자의 정보 가져오기
     ---
     tags:
-      - user
+      - Users
     parameters: []
     responses:
       '200':
@@ -20,10 +28,10 @@ def me():
         schema:
           $ref: '#/definitions/User'
     security:
-      - petstore_auth:
+      - oauth:
           - email
     """
+
     user = request.oauth.user
-    return jsonify(id=user.id, email=user.email)
 
-
+    return jsonify(user_schema.dump(user).data)

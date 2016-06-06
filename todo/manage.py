@@ -1,12 +1,20 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+
+from __future__ import print_function
+# Set the path
 import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script.commands import ShowUrls
 
-from todo import create_app, db
+from todo import create_app
+from todo.database import db
 
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
@@ -41,12 +49,14 @@ def test(coverage=False):
     if COV:
         COV.stop()
         COV.save()
-        print 'Coverage Summary:'
+        print
+        'Coverage Summary:'
         COV.report()
         basedir = os.path.abspath(os.path.dirname(__file__))
         covdir = os.path.join(basedir, 'tmp/coverage')
         COV.html_report(directory=covdir)
-        print 'HTML version: file://%s/index.html' % (covdir,)
+        print
+        'HTML version: file://%s/index.html' % (covdir,)
         COV.erase()
 
 

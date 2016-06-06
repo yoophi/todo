@@ -19,11 +19,10 @@ gunicorn==19.3.0
 inflection==0.3.1
 marshmallow-sqlalchemy==0.8.0
 psycopg2==2.6.1
-psycopg2==2.6.1
 python-dateutil==2.4.2
 pyyaml==3.11
 shortuuid==0.4.2
 SQLAlchemy==0.9.8
 voluptuous==0.8.7
 Werkzeug==0.10.4
--e git+https://github.com/yoophi/flask-swagger-ui.git@5a6187b73254c2f6c6bb9ee5f26fbe7fd5ed1a95#egg=Flask_Swagger_UI
+-e git+https://github.com/yoophi/flask-swagger-ui.git@ecd065e667a902049a530bd0050acb7275896963#egg=Flask_Swagger_UI

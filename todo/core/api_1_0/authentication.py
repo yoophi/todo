@@ -6,13 +6,17 @@ oauth implementation
 """
 
 from datetime import datetime, timedelta
+
 from flask import request, render_template, jsonify, redirect
 from flask.ext.login import current_user, login_required
 from flask.ext.security.utils import verify_password
 
+from todo.core.accounts.models import User
+from todo.database import db
+from todo.extensions import oauth
 from . import api
-from .. import oauth, db
-from ..models import Client, Grant, User, Token
+from .models import Client, Grant, Token
+
 
 @oauth.clientgetter
 def load_user_client(client_id):
@@ -61,7 +65,7 @@ def load_user_token(access_token=None, refresh_token=None):
 
 @oauth.tokensetter
 def save_user_token(token, request, *args, **kwargs):
-    expires_in = token.pop('expires_in') + 60*60
+    expires_in = token.pop('expires_in') + 60 * 60
     expires = datetime.utcnow() + timedelta(seconds=expires_in)
 
     token_data = {key: token[key] for key in token.keys()
