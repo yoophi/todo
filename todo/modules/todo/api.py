@@ -61,6 +61,11 @@ class TodoApi(MethodView):
           - oauth:
               - email
         parameters:
+          - name: id
+            description: Todo ID
+            in: path
+            type: integer
+            required: true
           - name: body
             in: body
             description: 수정하고 싶은 Todo JSON
@@ -95,15 +100,11 @@ class TodoApi(MethodView):
 
         payload = json.loads(request.data)
 
-        if 'title' in payload:
-            todo.title = payload.get('title')
+        for key in ('title', 'priority', 'is_completed', ):
+            if key in payload:
+                setattr(todo, key, payload.get(key))
 
-        if 'priority' in payload:
-            todo.priority = payload.get('priority')
-
-        if 'is_completed' in payload:
-            todo.is_completed = payload.get('is_completed')
-
+        db.session.add(todo)
         db.session.commit()
 
         return jsonify(result='Operate successfully', todo=todo_schema.dump(todo).data)
